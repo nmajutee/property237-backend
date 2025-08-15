@@ -27,12 +27,12 @@ class AgentProfile(models.Model):
     )
 
     user = models.OneToOneField(
-        User, 
-        on_delete=models.CASCADE, 
+        User,
+        on_delete=models.CASCADE,
         related_name='agent_profile',
         limit_choices_to={'user_type': 'agent'}
     )
-    
+
     # Professional Information
     license_number = models.CharField(max_length=50, unique=True)
     license_expiry = models.DateField()
@@ -40,37 +40,37 @@ class AgentProfile(models.Model):
     agency_address = models.TextField(blank=True)
     years_experience = models.CharField(max_length=10, choices=EXPERIENCE_CHOICES)
     specialization = models.CharField(max_length=20, choices=SPECIALIZATION_CHOICES)
-    
+
     # Contact & Social
     office_phone = models.CharField(max_length=17, blank=True)
     website = models.URLField(blank=True)
     linkedin_profile = models.URLField(blank=True)
     facebook_profile = models.URLField(blank=True)
     instagram_profile = models.URLField(blank=True)
-    
+
     # Professional Description
     bio = models.TextField(help_text="Professional biography and experience")
     languages_spoken = models.CharField(max_length=200, blank=True, help_text="Comma-separated languages")
-    
+
     # Service Areas
     service_areas = models.ManyToManyField('locations.Area', related_name='agents', blank=True)
-    
+
     # Professional Status
     is_verified = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    
+
     # Performance Metrics
     total_sales = models.PositiveIntegerField(default=0)
     total_rentals = models.PositiveIntegerField(default=0)
     client_rating = models.DecimalField(
-        max_digits=3, 
-        decimal_places=2, 
+        max_digits=3,
+        decimal_places=2,
         default=0.00,
         validators=[MinValueValidator(0), MaxValueValidator(5)]
     )
     total_reviews = models.PositiveIntegerField(default=0)
-    
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

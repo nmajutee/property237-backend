@@ -59,65 +59,65 @@ class TariffPlan(models.Model):
     description = models.TextField()
     category = models.ForeignKey(TariffCategory, on_delete=models.CASCADE, related_name='plans')
     plan_type = models.CharField(max_length=15, choices=PLAN_TYPES)
-    
+
     # Pricing
     price = models.DecimalField(max_digits=10, decimal_places=2)
     original_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     currency = models.CharField(max_length=3, default='USD')
     billing_cycle = models.CharField(max_length=15, choices=BILLING_CYCLES)
-    
+
     # Trial & Setup
     trial_days = models.PositiveIntegerField(default=0)
     setup_fee = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
-    
+
     # Property Limits
     max_properties = models.PositiveIntegerField(default=1)
     max_photos_per_property = models.PositiveIntegerField(default=5)
     max_videos_per_property = models.PositiveIntegerField(default=0)
     max_virtual_tours = models.PositiveIntegerField(default=0)
     max_featured_properties = models.PositiveIntegerField(default=0)
-    
+
     # Advertisement Features
     max_ad_campaigns = models.PositiveIntegerField(default=0)
     max_promoted_properties = models.PositiveIntegerField(default=0)
     social_media_posting = models.BooleanField(default=False)
     email_marketing = models.BooleanField(default=False)
-    
+
     # Analytics & Reports
     basic_analytics = models.BooleanField(default=True)
     advanced_analytics = models.BooleanField(default=False)
     custom_reports = models.BooleanField(default=False)
     export_data = models.BooleanField(default=False)
-    
+
     # Support Features
     email_support = models.BooleanField(default=True)
     phone_support = models.BooleanField(default=False)
     priority_support = models.BooleanField(default=False)
     dedicated_manager = models.BooleanField(default=False)
-    
+
     # API & Integration
     api_access = models.BooleanField(default=False)
     api_calls_per_month = models.PositiveIntegerField(default=0)
     webhook_support = models.BooleanField(default=False)
     third_party_integrations = models.BooleanField(default=False)
-    
+
     # Branding & Customization
     remove_branding = models.BooleanField(default=False)
     custom_domain = models.BooleanField(default=False)
     custom_themes = models.BooleanField(default=False)
     white_label = models.BooleanField(default=False)
-    
+
     # Display & Marketing
     is_popular = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
     display_order = models.PositiveIntegerField(default=0)
     badge_text = models.CharField(max_length=20, blank=True)
     highlight_color = models.CharField(max_length=7, default="#007BFF")
-    
+
     # Status
     is_active = models.BooleanField(default=True)
     is_public = models.BooleanField(default=True)
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -204,29 +204,29 @@ class UserSubscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptions')
     plan = models.ForeignKey(TariffPlan, on_delete=models.PROTECT)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='pending')
-    
+
     # Dates
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     trial_end_date = models.DateTimeField(blank=True, null=True)
     next_billing_date = models.DateTimeField(blank=True, null=True)
-    
+
     # Pricing (store at time of subscription)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=3)
     billing_cycle = models.CharField(max_length=15)
-    
+
     # Auto-renewal
     auto_renew = models.BooleanField(default=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
     cancellation_reason = models.TextField(blank=True)
-    
+
     # Usage tracking
     properties_used = models.PositiveIntegerField(default=0)
     photos_used = models.PositiveIntegerField(default=0)
     videos_used = models.PositiveIntegerField(default=0)
     api_calls_used = models.PositiveIntegerField(default=0)
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -290,25 +290,25 @@ class PlanUpgrade(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='plan_changes')
     from_plan = models.ForeignKey(
-        TariffPlan, 
-        on_delete=models.PROTECT, 
+        TariffPlan,
+        on_delete=models.PROTECT,
         related_name='upgrades_from'
     )
     to_plan = models.ForeignKey(
-        TariffPlan, 
-        on_delete=models.PROTECT, 
+        TariffPlan,
+        on_delete=models.PROTECT,
         related_name='upgrades_to'
     )
     change_type = models.CharField(max_length=10, choices=CHANGE_TYPES)
-    
+
     # Financial details
     proration_credit = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     additional_charge = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    
+
     # Timing
     effective_date = models.DateTimeField()
     requested_at = models.DateTimeField(auto_now_add=True)
-    
+
     reason = models.TextField(blank=True)
 
     class Meta:

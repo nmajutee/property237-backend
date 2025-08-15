@@ -15,27 +15,27 @@ class PaymentMethod(models.Model):
     is_online = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     processing_fee_percentage = models.DecimalField(
-        max_digits=5, 
-        decimal_places=2, 
+        max_digits=5,
+        decimal_places=2,
         default=0.00,
         validators=[MinValueValidator(0)]
     )
     fixed_fee = models.DecimalField(
-        max_digits=8, 
-        decimal_places=2, 
+        max_digits=8,
+        decimal_places=2,
         default=0.00,
         validators=[MinValueValidator(0)]
     )
     min_amount = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
+        max_digits=10,
+        decimal_places=2,
         default=0.00,
         validators=[MinValueValidator(0)]
     )
     max_amount = models.DecimalField(
-        max_digits=12, 
-        decimal_places=2, 
-        blank=True, 
+        max_digits=12,
+        decimal_places=2,
+        blank=True,
         null=True,
         validators=[MinValueValidator(0)]
     )
@@ -101,50 +101,50 @@ class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='transactions')
     transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    
+
     # Amount Information
     amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     currency = models.ForeignKey(Currency, on_delete=models.PROTECT)
     exchange_rate = models.DecimalField(max_digits=12, decimal_places=6, default=1.000000)
     amount_usd = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
-    
+
     # Fees
     processing_fee = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     platform_fee = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     total_amount = models.DecimalField(max_digits=12, decimal_places=2)
-    
+
     # Payment Details
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.PROTECT)
     gateway_transaction_id = models.CharField(max_length=100, blank=True)
     gateway_response = models.JSONField(blank=True, null=True)
-    
+
     # Related Objects
     advertisement = models.ForeignKey(
-        'ad.Advertisement', 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
+        'ad.Advertisement',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name='payments'
     )
     tariff_plan = models.ForeignKey(
-        'tariffplans.TariffPlan', 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
+        'tariffplans.TariffPlan',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name='payments'
     )
-    
+
     # Additional Information
     description = models.TextField(blank=True)
     notes = models.TextField(blank=True)
     receipt_url = models.URLField(blank=True)
     invoice_number = models.CharField(max_length=50, blank=True)
-    
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     processed_at = models.DateTimeField(blank=True, null=True)
-    
+
     # Refund Information
     refunded_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     refund_reason = models.TextField(blank=True)
@@ -162,13 +162,13 @@ class Transaction(models.Model):
     def save(self, *args, **kwargs):
         # Calculate total amount
         self.total_amount = self.amount + self.processing_fee + self.platform_fee
-        
+
         # Convert to USD for reporting
         if self.currency.code != 'USD':
             self.amount_usd = self.amount * self.exchange_rate
         else:
             self.amount_usd = self.amount
-            
+
         super().save(*args, **kwargs)
 
 
@@ -208,7 +208,7 @@ class PaymentAccount(models.Model):
         # Ensure only one primary account per user
         if self.is_primary:
             PaymentAccount.objects.filter(
-                user=self.user, 
+                user=self.user,
                 is_primary=True
             ).exclude(pk=self.pk).update(is_primary=False)
         super().save(*args, **kwargs)
@@ -229,13 +229,13 @@ class Invoice(models.Model):
     invoice_number = models.CharField(max_length=50, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='invoices')
     transaction = models.OneToOneField(
-        Transaction, 
-        on_delete=models.CASCADE, 
-        related_name='invoice', 
-        blank=True, 
+        Transaction,
+        on_delete=models.CASCADE,
+        related_name='invoice',
+        blank=True,
         null=True
     )
-    
+
     # Invoice Details
     subject = models.CharField(max_length=200)
     description = models.TextField()
@@ -244,18 +244,18 @@ class Invoice(models.Model):
     discount_amount = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     total_amount = models.DecimalField(max_digits=12, decimal_places=2)
     currency = models.ForeignKey(Currency, on_delete=models.PROTECT)
-    
+
     # Dates
     issue_date = models.DateField()
     due_date = models.DateField()
     paid_date = models.DateTimeField(blank=True, null=True)
-    
+
     # Status
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='draft')
-    
+
     # Files
     pdf_file = models.FileField(upload_to='invoices/', blank=True, null=True)
-    
+
     # Metadata
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -293,18 +293,18 @@ class Refund(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     reason = models.TextField()
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='requested')
-    
+
     # Processing
     processed_by = models.ForeignKey(
-        User, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name='processed_refunds'
     )
     processing_notes = models.TextField(blank=True)
     gateway_refund_id = models.CharField(max_length=100, blank=True)
-    
+
     # Timestamps
     requested_at = models.DateTimeField(auto_now_add=True)
     processed_at = models.DateTimeField(blank=True, null=True)

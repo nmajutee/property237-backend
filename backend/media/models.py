@@ -63,7 +63,7 @@ class PropertyImage(models.Model):
         # Ensure only one primary image per property
         if self.is_primary:
             PropertyImage.objects.filter(
-                property=self.property, 
+                property=self.property,
                 is_primary=True
             ).exclude(pk=self.pk).update(is_primary=False)
         super().save(*args, **kwargs)
