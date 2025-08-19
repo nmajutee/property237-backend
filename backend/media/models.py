@@ -21,6 +21,36 @@ class MediaCategory(models.Model):
         return self.name
 
 
+class MediaFile(models.Model):
+    """
+    Generic media file model for the API
+    """
+    FILE_TYPES = (
+        ('image', 'Image'),
+        ('video', 'Video'),
+        ('document', 'Document'),
+        ('virtual_tour', 'Virtual Tour'),
+    )
+
+    property = models.ForeignKey('properties.Property', on_delete=models.CASCADE, related_name='media_files')
+    file = models.FileField(upload_to='media_files/')
+    file_type = models.CharField(max_length=15, choices=FILE_TYPES, default='image')
+    title = models.CharField(max_length=100, blank=True)
+    description = models.TextField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+    is_featured = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['order', 'uploaded_at']
+
+    def __str__(self):
+        return f"{self.property.title} - {self.title or self.file.name}"
+
+
 class PropertyImage(models.Model):
     """
     Images for properties
@@ -90,7 +120,7 @@ class PropertyVideo(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     duration = models.DurationField(blank=True, null=True)
-    is_featured = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False)  # Fixed: was BooleanFilter
     order = models.PositiveIntegerField(default=0)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
