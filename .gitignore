@@ -264,3 +264,4 @@ elasticsearch/
 
 # Whoosh index
 whoosh_index/
+private/
