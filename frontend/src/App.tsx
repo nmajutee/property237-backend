@@ -97,36 +97,40 @@ export default function App() {
     <div className="property237-app-container">
       {/* Header */}
       <header className="property237-header">
+        // Navigation bar
         <nav className="property237-nav">
-          <a href="/" className="property237-logo">
-            <Home size={24} />
-            Property237
-          </a>
-          <div className="property237-nav-links">
-            <a href="#" className="property237-nav-link">
-              <Home size={16} />
-              Find a Home
-            </a>
-            <a href="#" className="property237-nav-link">
-              <User size={16} />
-              Find an Agent
-            </a>
-            <a href="#" className="property237-nav-link">
-              <Calculator size={16} />
-              Mortgage Calculators
-            </a>
-            <a href="#" className="property237-nav-link">
-              <BookOpen size={16} />
-              Latest News
+          <div style={{display: 'flex', alignItems: 'center', gap: 12}}>
+            <a href="/" className="property237-logo">
+              <Home size={24} />
+              Property237
             </a>
           </div>
-          <div className="property237-auth">
-            <span>XAF</span>
-            <a href="#" className="property237-sign-in-btn">
-              <User size={16} />
-              Sign In
-            </a>
-            <span>EN | FR</span>
+
+          <div style={{display:'flex', alignItems:'center', gap:16}}>
+            <div className="property237-nav-links" style={{marginRight: 8}}>
+              <a href="#" className="property237-nav-link"><Home size={16}/> Find a Home</a>
+              <a href="#" className="property237-nav-link"><User size={16}/> Find an Agent</a>
+              <a href="#" className="property237-nav-link"><Calculator size={16}/> Mortgage Calculators</a>
+              <a href="#" className="property237-nav-link"><BookOpen size={16}/> Latest News</a>
+            </div>
+
+            <div style={{display: 'flex', alignItems:'center', gap:8, marginRight: 8}}>
+              <button aria-label="saved" style={{background:'rgba(255,255,255,0.12)', borderRadius:8, padding:6, border:'none', color:'white'}}>
+                <BookOpen size={18}/>
+              </button>
+              <button aria-label="favorites" style={{background:'rgba(255,255,255,0.12)', borderRadius:8, padding:6, border:'none', color:'white'}}>
+                <Heart size={18}/>
+              </button>
+            </div>
+
+            <div className="property237-auth">
+              <span style={{opacity:0.95}}>XAF</span>
+              <a href="#" className="property237-sign-in-btn"><User size={16}/> Sign In</a>
+              <div className="property237-lang">
+                <button className="lang-btn active">EN</button>
+                <button className="lang-btn">FR</button>
+              </div>
+            </div>
           </div>
         </nav>
       </header>
