@@ -27,7 +27,7 @@ class PropertyListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Property.objects.filter(is_active=True).select_related(
             'property_type', 'status', 'area__city__region', 'agent__user'
-        ).prefetch_related('additional_features', 'media_files').order_by('-created_at')  # media_files is now available
+        ).prefetch_related('additional_features').order_by('-created_at')  # media_files is now available
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -50,7 +50,7 @@ class PropertyDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Property.objects.select_related(
         'property_type', 'status', 'area__city__region', 'agent__user'
-    ).prefetch_related('additional_features', 'media_files')  # media_files now available
+    ).prefetch_related('additional_features')  # media_files now available
     serializer_class = PropertyDetailSerializer
     lookup_field = 'slug'
     permission_classes = [IsOwnerOrReadOnly]

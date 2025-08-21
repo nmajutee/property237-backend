@@ -73,10 +73,10 @@ class PropertyFilter(django_filters.FilterSet):
             'land_size_sqm': ['exact', 'gte', 'lte'],
         }
 
-def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs)
-    # Safely populate querysets without causing import loops
-    if 'property_type' in self.filters:
-        self.filters['property_type'].queryset = PropertyType.objects.filter(is_active=True)
-    if 'status' in self.filters:
-        self.filters['status'].queryset = PropertyStatus.objects.filter(is_active=True)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Safely populate querysets without causing import loops
+        if 'property_type' in self.filters:
+            self.filters['property_type'].queryset = PropertyType.objects.filter(is_active=True)
+        if 'status' in self.filters:
+            self.filters['status'].queryset = PropertyStatus.objects.filter(is_active=True)

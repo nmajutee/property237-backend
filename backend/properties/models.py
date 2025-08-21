@@ -294,27 +294,58 @@ class Property(models.Model):
     def __str__(self):
         return f"{self.title} - {self.get_listing_type_display()}"
 
-def save(self, *args, **kwargs):
-    if not self.slug:
-        base_slug = slugify(f"{self.title}-{self.area.name if self.area else 'unknown'}")
-        slug = base_slug
-        counter = 1
-        max_attempts = 100  # Prevent infinite loop
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(f"{self.title}-{self.area.name if self.area else 'unknown'}")
+            slug = base_slug
+            counter = 1
+            max_attempts = 100  # Prevent infinite loop
 
-        # Ensure unique slug with safety limit
-        while Property.objects.filter(slug=slug).exists() and counter < max_attempts:
-            slug = f"{base_slug}-{counter}"
-            counter += 1
+            # Ensure unique slug with safety limit
+            while Property.objects.filter(slug=slug).exists() and counter < max_attempts:
+                slug = f"{base_slug}-{counter}"
+                counter += 1
 
-        # If we hit max attempts, use a timestamp suffix
-        if counter >= max_attempts:
-            from datetime import datetime
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            slug = f"{base_slug}-{timestamp}"
+            # If we hit max attempts, use a timestamp suffix
+            if counter >= max_attempts:
+                from datetime import datetime
+                timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+                slug = f"{base_slug}-{timestamp}"
 
-        self.slug = slug
+            self.slug = slug
 
-    super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        """
+        Custom validation logic
+        """
+        from django.core.exceptions import ValidationError
+        errors = {}
+
+        # Validate floor_number for apartments
+        if self.floor_number and self.floor_number > self.no_of_floors:
+            errors['floor_number'] = "Floor number cannot exceed total number of floors"
+
+        # Validate listing type specific fields
+        if self.listing_type == 'rent':
+            if self.initial_months_payable and self.initial_months_payable < 1:
+                errors['initial_months_payable'] = "Must specify at least 1 month payable for rent"
+
+        elif self.listing_type == 'sale':
+            if not self.land_size_sqm:
+                errors['land_size_sqm'] = "Land size is required for sale properties"
+
+        elif self.listing_type == 'guest_house':
+            if not self.price_per_day:
+                errors['price_per_day'] = "Daily price is required for guest houses"
+
+        # Validate commission fields
+        if self.agent_commission_percentage and self.agent_commission_months:
+            errors['agent_commission_percentage'] = "Specify either percentage or months commission, not both"
+
+        if errors:
+            raise ValidationError(errors)
 
     def clean(self):
         """
