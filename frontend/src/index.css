@@ -2,57 +2,57 @@
 
 @import "tailwindcss";
 
-/* Move custom styles to components layer so they override Tailwind base */
-@layer components {
-  /* Design Tokens - Property237 Real Estate Marketplace */
-  :root {
-    --property237-color-primary: 16 185 129; /* emerald-500 */
-    --property237-color-primary-dark: 5 150 105; /* emerald-600 */
-    --property237-color-primary-light: 110 231 183; /* emerald-300 */
-    --property237-color-secondary: 99 102 241; /* indigo-500 */
-    --property237-color-accent: 251 146 60; /* orange-400 */
-    --property237-color-surface: 249 250 251; /* gray-50 */
-    --property237-color-surface-dark: 31 41 55; /* gray-800 */
-    --property237-color-text: 17 24 39; /* gray-900 */
-    --property237-color-text-light: 107 114 128; /* gray-500 */
-    --property237-color-border: 229 231 235; /* gray-200 */
-    --property237-color-border-dark: 156 163 175; /* gray-400 */
+/* Global design tokens (moved outside @layer so they're always available) */
+:root {
+  --property237-color-primary: 16 185 129; /* emerald-500 */
+  --property237-color-primary-dark: 5 150 105; /* emerald-600 */
+  --property237-color-primary-light: 110 231 183; /* emerald-300 */
+  --property237-color-secondary: 99 102 241; /* indigo-500 */
+  --property237-color-accent: 251 146 60; /* orange-400 */
+  --property237-color-surface: 249 250 251; /* gray-50 */
+  --property237-color-surface-dark: 31 41 55; /* gray-800 */
+  --property237-color-text: 17 24 39; /* gray-900 */
+  --property237-color-text-light: 107 114 128; /* gray-500 */
+  --property237-color-border: 229 231 235; /* gray-200 */
+  --property237-color-border-dark: 156 163 175; /* gray-400 */
 
-    /* New red brand used for top bar (REALTOR-like) */
-    --property237-brand-red: 199 28 38;
+  /* New red brand used for top bar (REALTOR-like) */
+  --property237-brand-red: 199 28 38;
 
-    /* Spacing */
-    --property237-spacing-xs: 0.5rem;
-    --property237-spacing-sm: 1rem;
-    --property237-spacing-md: 1.5rem;
-    --property237-spacing-lg: 2rem;
-    --property237-spacing-xl: 3rem;
+  /* Spacing */
+  --property237-spacing-xs: 0.5rem;
+  --property237-spacing-sm: 1rem;
+  --property237-spacing-md: 1.5rem;
+  --property237-spacing-lg: 2rem;
+  --property237-spacing-xl: 3rem;
 
-    /* Typography */
-    --property237-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --property237-font-size-xs: 0.75rem;
-    --property237-font-size-sm: 0.875rem;
-    --property237-font-size-base: 1rem;
-    --property237-font-size-lg: 1.125rem;
-    --property237-font-size-xl: 1.25rem;
-    --property237-font-size-2xl: 1.5rem;
-    --property237-font-size-3xl: 1.875rem;
-    --property237-font-size-4xl: 2.25rem;
-    --property237-hero-max-width: 1100px;
+  /* Typography */
+  --property237-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --property237-font-size-xs: 0.75rem;
+  --property237-font-size-sm: 0.875rem;
+  --property237-font-size-base: 1rem;
+  --property237-font-size-lg: 1.125rem;
+  --property237-font-size-xl: 1.25rem;
+  --property237-font-size-2xl: 1.5rem;
+  --property237-font-size-3xl: 1.875rem;
+  --property237-font-size-4xl: 2.25rem;
+  --property237-hero-max-width: 1100px;
 
-    /* Shadows */
-    --property237-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.06);
-    --property237-shadow-md: 0 6px 18px rgb(0 0 0 / 0.08);
-    --property237-shadow-lg: 0 14px 40px rgb(0 0 0 / 0.12);
+  /* Shadows */
+  --property237-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.06);
+  --property237-shadow-md: 0 6px 18px rgb(0 0 0 / 0.08);
+  --property237-shadow-lg: 0 14px 40px rgb(0 0 0 / 0.12);
 
-    /* Border Radius */
-    --property237-radius-sm: 0.25rem;
-    --property237-radius-md: 0.375rem;
-    --property237-radius-lg: 0.5rem;
-    --property237-radius-xl: 0.75rem;
-    --property237-radius-pill: 9999px;
-  }
+  /* Border Radius */
+  --property237-radius-sm: 0.25rem;
+  --property237-radius-md: 0.375rem;
+  --property237-radius-lg: 0.5rem;
+  --property237-radius-xl: 0.75rem;
+  --property237-radius-pill: 9999px;
+}
 
+/* Base layer: typography and global base rules */
+@layer base {
   /* Base Typography */
   body {
     font-family: var(--property237-font-family);
@@ -66,6 +66,12 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* small helper */
+  .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+}
+
+/* Move custom styles to components layer so they override Tailwind base */
+@layer components {
   /* Top header bar (solid red like screenshot) */
   .property237-header {
     background: rgb(var(--property237-brand-red));
@@ -162,10 +168,91 @@
     font-weight: 700;
     font-size: 0.8rem;
     border: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
   .property237-lang .lang-btn.active {
     background: white;
     color: rgb(var(--property237-brand-red));
+  }
+  .property237-lang .lang-btn:hover:not(.active) {
+    background: rgba(255,255,255,0.18);
+  }
+
+  /* Navigation action buttons */
+  .property237-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .icon-btn {
+    background: rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 6px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .icon-btn:hover {
+    background: rgba(255,255,255,0.18);
+  }
+
+  .currency {
+    opacity: 0.95;
+    font-weight: 500;
+  }
+
+  .property237-nav-left,
+  .property237-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .property237-nav-left {
+    flex: 1;
+  }
+
+  /* Property type tabs */
+  .property237-property-type-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+  }
+
+  .property237-property-type-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: white;
+    color: rgb(var(--property237-color-text));
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .property237-property-type-tab.active {
+    background: rgb(var(--property237-color-primary));
+    color: white;
+    border-color: rgb(var(--property237-color-primary));
+  }
+
+  .property237-property-type-tab:hover {
+    border-color: rgb(var(--property237-color-primary));
+  }
+
+  .property237-hero-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
   }
 
   /* Hero / hero search */
@@ -308,6 +395,11 @@
     .property237-nav {
       padding: 0.4rem var(--property237-spacing-sm);
       flex-wrap: wrap;
+    }
+
+    /* Hide nav links on small screens */
+    .property237-nav-links {
+      display: none;
     }
 
     .property237-hero-search .search-pill {
