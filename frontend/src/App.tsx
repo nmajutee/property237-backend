@@ -1,23 +1,21 @@
+import {
+  Bath,
+  Bed,
+  Building2,
+  Heart,
+  Home,
+  List,
+  Map,
+  MapPin,
+  Ruler,
+  Save,
+  Search,
+  Settings
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
-import api from './lib/api'
 import Header from './components/Header'
 import './index.css'
-import {
-  Home,
-  Building2,
-  Search,
-  Settings,
-  Save,
-  Map,
-  List,
-  Bed,
-  Bath,
-  Ruler,
-  MapPin,
-  Heart,
-  User,
-  BookOpen
-} from 'lucide-react'
+import api from './lib/api'
 
 type Property = {
   id: number
@@ -67,7 +65,7 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState('residential')
-  const [viewMode, setViewMode] = useState<'list'|'map'>('list')
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list')
   const [activeLanguage, setActiveLanguage] = useState<'EN' | 'FR'>('EN')
 
   useEffect(() => {
