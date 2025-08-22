@@ -28,7 +28,7 @@
   /* gray-400 */
 
   /* New red brand used for top bar (REALTOR-like) */
-  --property237-brand-red: 199 28 38;
+  --property237-brand-red: 16 185 129;
 
   /* Spacing */
   --property237-spacing-xs: 0.5rem;
@@ -162,126 +162,15 @@
     transform: translateY(-1px);
   }
 
-  /* Navigation Dropdowns */
-  .property237-nav-dropdown {
-    position: relative;
-    display: inline-block;
-  }
-
-  .property237-dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    min-width: 200px;
-    box-shadow: var(--property237-shadow-lg);
-    border-radius: var(--property237-radius-md);
-    border: 1px solid rgb(var(--property237-color-border));
-    padding: var(--property237-spacing-xs) 0;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.2s ease;
-    z-index: 100;
-  }
-
-  .property237-nav-dropdown:hover .property237-dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .property237-dropdown-menu a {
-    display: block;
-    padding: var(--property237-spacing-xs) var(--property237-spacing-md);
-    color: rgb(var(--property237-color-text));
-    text-decoration: none;
-    font-size: var(--property237-font-size-sm);
-    transition: background-color 0.15s ease;
-  }
-
-  .property237-dropdown-menu a:hover {
-    background-color: rgb(var(--property237-color-surface));
-    color: rgb(var(--property237-color-primary));
-  }
-
-  .property237-dropdown-menu hr {
-    margin: var(--property237-spacing-xs) 0;
-    border: none;
-    border-top: 1px solid rgb(var(--property237-color-border));
-  }
-
   .property237-nav-right {
     display: flex;
     align-items: center;
     gap: var(--property237-spacing-md);
   }
 
-  .property237-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--property237-spacing-xs);
-  }
-
-  .icon-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: var(--property237-radius-md);
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .icon-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-1px);
-  }
-
-  .property237-auth {
-    display: flex;
-    align-items: center;
-    gap: var(--property237-spacing-md);
-  }
-
-  .currency {
-    font-weight: 600;
-    font-size: var(--property237-font-size-sm);
-    color: white;
-    padding: 0.25rem 0.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: var(--property237-radius-sm);
-  }
-
-  /* Contact Button */
-  .property237-contact-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--property237-spacing-xs);
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    text-decoration: none;
-    border-radius: var(--property237-radius-md);
-    font-size: var(--property237-font-size-sm);
-    font-weight: 500;
-    transition: all 0.2s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .property237-contact-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-1px);
-  }
-
-  /* Auth Dropdown */
-  .property237-auth-dropdown {
-    position: relative;
-    display: inline-block;
+  /* Auth section styling */
+  .property237-auth-section {
+    margin-right: var(--property237-spacing-sm);
   }
 
   .property237-sign-in-btn {
@@ -301,45 +190,6 @@
   .property237-sign-in-btn:hover {
     background: white;
     transform: translateY(-1px);
-  }
-
-  .property237-auth-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: white;
-    min-width: 180px;
-    box-shadow: var(--property237-shadow-lg);
-    border-radius: var(--property237-radius-md);
-    border: 1px solid rgb(var(--property237-color-border));
-    padding: var(--property237-spacing-xs) 0;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.2s ease;
-    z-index: 100;
-  }
-
-  .property237-auth-dropdown:hover .property237-auth-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .property237-auth-menu a {
-    display: flex;
-    align-items: center;
-    gap: var(--property237-spacing-xs);
-    padding: var(--property237-spacing-xs) var(--property237-spacing-md);
-    color: rgb(var(--property237-color-text));
-    text-decoration: none;
-    font-size: var(--property237-font-size-sm);
-    transition: background-color 0.15s ease;
-  }
-
-  .property237-auth-menu a:hover {
-    background-color: rgb(var(--property237-color-surface));
-    color: rgb(var(--property237-color-primary));
   }
 
   .property237-lang {
@@ -367,6 +217,31 @@
   .lang-btn.active {
     background: rgba(255, 255, 255, 0.9);
     color: rgb(var(--property237-brand-red));
+  }
+
+  .property237-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--property237-spacing-xs);
+  }
+
+  .icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--property237-radius-md);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
   }
 
   /* Hero Section */
@@ -782,16 +657,6 @@
       display: none;
     }
 
-    .property237-dropdown-menu,
-    .property237-auth-menu {
-      position: fixed;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90vw;
-      max-width: 300px;
-    }
-
     .property237-main-container {
       grid-template-columns: 1fr;
       padding: var(--property237-spacing-md);
@@ -820,10 +685,6 @@
 
     .property237-actions {
       gap: 0.5rem;
-    }
-
-    .property237-contact-btn {
-      display: none;
     }
 
     .property237-hero-title {
